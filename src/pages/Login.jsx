@@ -31,7 +31,7 @@ const AuthForm = () => {
 
     if (varient === 'REGISTER') {
         axiosConfig
-        .post('user/register', data)
+        .post('users/register', data)
         .then((res) => res.status === 200 && navigate('/mytodos'))
         .catch((err) => {
           if (err.response) {
@@ -43,7 +43,7 @@ const AuthForm = () => {
 
     if (varient === 'LOGIN') {
       axiosConfig
-        .post('user/authenticate', data)
+        .post('users/authenticate', data)
         .then((res) => res.status === 200 && navigate('/mytodos'))
         .catch((err) => {
           if (err.response) {

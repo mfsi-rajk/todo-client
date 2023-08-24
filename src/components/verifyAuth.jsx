@@ -10,7 +10,7 @@ export default function verifyAuth(ComponentToProtect) {
 
     useEffect(() => {
       axiosConfig
-        .get('user/checkToken')
+        .get('users/checkToken')
         .then((res) => {
           if (res.status === 200) {
             setLoading(false);
