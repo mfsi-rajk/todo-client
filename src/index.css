@@ -1,3 +1,30 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.td-class {
+  @apply h-16 px-4 py-3 text-gray-900 bg-gray-200 first:rounded-t-lg last:rounded-b-lg sm:first:rounded-t-none sm:last:rounded-b-none sm:first:rounded-tl-lg sm:first:rounded-bl-lg sm:last:rounded-tr-lg sm:last:rounded-br-lg;
+}
+
+.td-header-class {
+  @apply h-16 px-4 py-3 bg-blue-400 text-white text-lg first:rounded-t-lg last:rounded-b-lg sm:first:rounded-t-none sm:last:rounded-b-none sm:first:rounded-tl-lg sm:first:rounded-bl-lg sm:last:rounded-tr-lg sm:last:rounded-br-lg;
+}
+
+.tr-class {
+  @apply flex flex-col mb-4 sm:table-row;
+}
+
+.green-tag {
+  @apply rounded-md bg-green-600/50 py-2 px-4 text-xs font-semibold uppercase text-green-900 antialiased;
+}
+
+.yellow-tag {
+  @apply rounded-md bg-yellow-400 py-2 px-4 text-xs font-semibold uppercase text-yellow-700 antialiased;
+}
+
+.red-tag {
+  @apply rounded-md bg-rose-600/50 py-2 px-4 text-xs font-semibold uppercase text-rose-900 antialiased;
+}
+.input-class {
+  @apply form-input block w-full mt-2 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400;
+}
