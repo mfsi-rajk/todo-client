@@ -27,7 +27,6 @@ const AuthForm = () => {
 
   const onSubmit = (data) => {
     setIsLoading(true);
-    console.log(data);
 
     if (varient === 'REGISTER') {
         axiosConfig
