@@ -66,6 +66,15 @@ const Table = ({ todoList }) => {
     }
   };
 
+  const isDueDateWithin2Days = (dueDate) => {
+    const today = new Date();
+    const due = new Date(dueDate);
+    const timeDifference = due - today;
+    const twoDaysInMillis = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+
+    return timeDifference <= twoDaysInMillis;
+  };
+
   return (
     <div className='h-auto md:h-80vh flex items-center justify-center my-10'>
       <div className='w-full md:w-5/6 lg:w-5/6 xl:w-5/6 min-w-min overflow-x-auto bg-white shadow-lg p-4 md:p-6'>
@@ -181,7 +190,18 @@ const Table = ({ todoList }) => {
                       </span>
                     </td>
                     <td class='td-class'>{task.status}</td>
-                    <td class='td-class'>{new Date(task.dueDate).toDateString()}</td>
+                    <td class='td-class'>
+                      <span
+                        className={clsx(
+                          isDueDateWithin2Days(task.dueDate)
+                            ? 'text-red-500'
+                            : 'text-blue-500'
+                        )}
+                      >
+                        {new Date(task.dueDate).toDateString()}
+                      </span>
+                    </td>
+
                     <td class='td-class'>{task.category}</td>
                     <td class='td-class'>
                       <span className='flex flex-row gap-3 justify-between'>

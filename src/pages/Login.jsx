@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import axiosConfig from '../config/axiosConfig';
 import { toast } from 'react-toastify';
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm = () => {
   const [varient, setVarient] = useState('LOGIN');
@@ -29,9 +29,14 @@ const AuthForm = () => {
     setIsLoading(true);
 
     if (varient === 'REGISTER') {
-        axiosConfig
+      axiosConfig
         .post('users/register', data)
-        .then((res) => res.status === 200 && navigate('/mytodos'))
+        .then((res) => {
+          if (res.status === 200){
+            setIsLoading(false)
+            toast.success('Account created successfully. Please log in to continue');
+          }
+        })
         .catch((err) => {
           if (err.response) {
             toast.error(err.response.data.error || 'Something went wrong');

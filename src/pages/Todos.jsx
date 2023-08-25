@@ -12,7 +12,7 @@ function Todos() {
   }, [params]);
 
   return (
-    <div className='bg-gray-100 h-full'>
+    <div className='bg-gray-100 h-screen'>
       <TodoContext.Provider value={{ todoList, setTodoList, params, setParams }}>
         <Navbar />
         <TodoTable todoList={todoList} />

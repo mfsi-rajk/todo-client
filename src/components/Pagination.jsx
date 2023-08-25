@@ -50,7 +50,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           className={`bg-gray-200 rounded-md px-4 py-2 ${
             isFirstPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'
           }`}
-          disabled={isFirstPage}
+          disabled={isFirstPage  || totalPages === 0}
         >
           Previous
         </button>
@@ -60,7 +60,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           className={`bg-gray-200 rounded-md px-4 py-2 ${
             isLastPage ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-300'
           }`}
-          disabled={isLastPage}
+          disabled={isLastPage || totalPages === 0}
         >
           Next
         </button>
