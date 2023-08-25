@@ -20,7 +20,6 @@ export default function verifyAuth(ComponentToProtect) {
           }
         })
         .catch((err) => {
-            console.log(err);
           if (err.response) {
             toast.error(err.response.data || 'Something went wrong');
             setLoading(false);

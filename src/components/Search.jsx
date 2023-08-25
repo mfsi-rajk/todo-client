@@ -6,7 +6,6 @@ import clsx from 'clsx';
 function Search() {
   const onSubmit = (data) => {
     // setIsLoading(true);
-    console.log(data);
   };
   const { register, handleSubmit } = useForm();
   return (
