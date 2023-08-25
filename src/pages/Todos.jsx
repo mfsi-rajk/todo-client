@@ -15,7 +15,7 @@ function Todos() {
     <div className='bg-gray-100 h-full'>
       <TodoContext.Provider value={{ todoList, setTodoList, params, setParams }}>
         <Navbar />
-        <TodoTable tasks={todoList} />
+        <TodoTable todoList={todoList} />
       </TodoContext.Provider>
     </div>
   );

@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Button from './Button';
 import { useForm } from 'react-hook-form';
 import clsx from 'clsx';
+import { TodoContext } from '../TodoContext';
 
 function Search() {
+  const { setParams } = useContext(TodoContext);
   const onSubmit = (data) => {
+    console.log(data);
+    setParams((prevState) => {
+      return { ...prevState, searchQuery: data.search };
+    });
     // setIsLoading(true);
   };
   const { register, handleSubmit } = useForm();

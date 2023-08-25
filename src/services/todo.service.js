@@ -9,7 +9,7 @@ export const getAllTodos = (setTodoList, params) => {
     .get(url, { params: cleanParams })
     .then((res) => {
       if (res.status === 200) {
-        setTodoList(res.data.todos);
+        setTodoList(res.data);
       }
     })
     .catch((err) => {

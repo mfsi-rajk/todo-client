@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Button from './Button';
 import Search from './Search';
 import AddTodoModal from './modals/AddTodoModal';
@@ -6,8 +6,9 @@ import clsx from 'clsx';
 import DeleteModal from './modals/DeleteModal';
 import { editTodo, getAllTodos } from '../services/todo.service';
 import { TodoContext } from '../TodoContext';
+import Pagination from './Pagination';
 
-const Table = ({ tasks }) => {
+const Table = ({ todoList }) => {
   const { setTodoList, setParams } = useContext(TodoContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
@@ -15,11 +16,56 @@ const Table = ({ tasks }) => {
   const [currentTodo, setCurrentTodo] = useState(null);
   const [mode, setMode] = useState(null);
   const [status, setStatus] = useState('');
+  const [page, setPage] = useState(1);
 
   const onModalClose = () => {
     setModalVisible(false);
     setDeleteModalVisible(false);
   };
+
+  useEffect(() => {
+    setParams((prevState) => {
+      return { ...prevState, page: page };
+    });
+  }, [page]);
+
+  const setSortParams = (value) => {
+    switch (value) {
+      case 'category':
+        setParams((prevState) => {
+          return {
+            ...prevState,
+            sortByCategory: '1',
+            sortByDueDate: '',
+            sortByPriority: '',
+          };
+        });
+        break;
+      case 'priority':
+        setParams((prevState) => {
+          return {
+            ...prevState,
+            sortByCategory: '',
+            sortByDueDate: '',
+            sortByPriority: '1',
+          };
+        });
+        break;
+      case 'dueDate':
+        setParams((prevState) => {
+          return {
+            ...prevState,
+            sortByCategory: '',
+            sortByDueDate: '1',
+            sortByPriority: '',
+          };
+        });
+        break;
+      default:
+        return;
+    }
+  };
+
   return (
     <div className='h-auto md:h-80vh flex items-center justify-center my-10'>
       <div className='w-full md:w-5/6 lg:w-5/6 xl:w-5/6 min-w-min overflow-x-auto bg-white shadow-lg p-4 md:p-6'>
@@ -81,6 +127,23 @@ const Table = ({ tasks }) => {
             >
               Incomplete
             </li>
+            <li className='grow'></li>
+            <li className='flex flex-row justify-center items-center'>
+              <span className='w-48 font-medium'>Sort By - </span>
+              <select
+                name='category'
+                id='category'
+                className='input-class'
+                onChange={(e) => setSortParams(e.target.value)}
+              >
+                <option value='' disabled selected>
+                  Select sort type
+                </option>
+                <option value='priority'>Priority</option>
+                <option value='dueDate'>Due Date</option>
+                <option value='category'>Category</option>
+              </select>
+            </li>
           </ul>
         </div>
 
@@ -97,65 +160,73 @@ const Table = ({ tasks }) => {
               </tr>
             </thead>
             <tbody>
-              {tasks.map((task) => (
-                <tr className='tr-class' key={task._id}>
-                  <td className='td-class'>
-                    <div className='text-lg'>{task.title}</div>
-                    <span className='text-sm'>{task.description}</span>
-                  </td>
-                  <td className='td-class'>
-                    <span
-                      className={clsx(
-                        task.priority === 'low' && 'green-tag',
-                        task.priority === 'medium' && 'yellow-tag',
-                        task.priority === 'high' && 'red-tag'
-                      )}
-                    >
-                      {task.priority}
-                    </span>
-                  </td>
-                  <td class='td-class'>{task.status}</td>
-                  <td class='td-class'>{new Date(task.dueDate).toDateString()}</td>
-                  <td class='td-class'>{task.category}</td>
-                  <td class='td-class'>
-                    <span className='flex flex-row gap-3 justify-between'>
-                      <button
-                        className='bg-green-600 text-white px-4 py-2 rounded-lg'
-                        onClick={() => {
-                          editTodo(task._id, {
-                            status: task.status === 'incomplete' ? 'complete' : 'incomplete',
-                          });
-                          getAllTodos(setTodoList);
-                        }}
+              {todoList &&
+                todoList.todos &&
+                todoList.todos.length > 0 &&
+                todoList.todos.map((task) => (
+                  <tr className='tr-class' key={task._id}>
+                    <td className='td-class'>
+                      <div className='text-lg'>{task.title}</div>
+                      <span className='text-sm'>{task.description}</span>
+                    </td>
+                    <td className='td-class'>
+                      <span
+                        className={clsx(
+                          task.priority === 'low' && 'green-tag',
+                          task.priority === 'medium' && 'yellow-tag',
+                          task.priority === 'high' && 'red-tag'
+                        )}
                       >
-                        {task.status === 'incomplete' ? 'Mark as Complete' : 'Mark as Incomplete'}
-                      </button>
-                      <button
-                        className='bg-blue-400 text-white px-4 py-2 rounded-lg'
-                        onClick={() => {
-                          setModalVisible(true);
-                          setMode('edit');
-                          setCurrentTodo(task);
-                        }}
-                      >
-                        Edit
-                      </button>
-                      <button
-                        className='bg-rose-400 text-white px-4 py-2 rounded-lg'
-                        onClick={() => {
-                          setTodoId(task._id);
-                          setDeleteModalVisible(true);
-                        }}
-                      >
-                        Delete
-                      </button>
-                    </span>
-                  </td>
-                </tr>
-              ))}
+                        {task.priority}
+                      </span>
+                    </td>
+                    <td class='td-class'>{task.status}</td>
+                    <td class='td-class'>{new Date(task.dueDate).toDateString()}</td>
+                    <td class='td-class'>{task.category}</td>
+                    <td class='td-class'>
+                      <span className='flex flex-row gap-3 justify-between'>
+                        <button
+                          className='bg-green-600 text-white px-4 py-2 rounded-lg'
+                          onClick={() => {
+                            editTodo(task._id, {
+                              status: task.status === 'incomplete' ? 'complete' : 'incomplete',
+                            });
+                            getAllTodos(setTodoList);
+                          }}
+                        >
+                          {task.status === 'incomplete' ? 'Mark as Complete' : 'Mark as Incomplete'}
+                        </button>
+                        <button
+                          className='bg-blue-400 text-white px-4 py-2 rounded-lg'
+                          onClick={() => {
+                            setModalVisible(true);
+                            setMode('edit');
+                            setCurrentTodo(task);
+                          }}
+                        >
+                          Edit
+                        </button>
+                        <button
+                          className='bg-rose-400 text-white px-4 py-2 rounded-lg'
+                          onClick={() => {
+                            setTodoId(task._id);
+                            setDeleteModalVisible(true);
+                          }}
+                        >
+                          Delete
+                        </button>
+                      </span>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
+        <Pagination
+          currentPage={todoList.currentPage}
+          totalPages={todoList.totalPages}
+          onPageChange={setPage}
+        />
       </div>
     </div>
   );
