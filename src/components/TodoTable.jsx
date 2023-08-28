@@ -7,6 +7,11 @@ import DeleteModal from './modals/DeleteModal';
 import { editTodo, getAllTodos } from '../services/todo.service';
 import { TodoContext } from '../TodoContext';
 import Pagination from './Pagination';
+import { BiSolidEditAlt } from 'react-icons/bi';
+import { BiSort } from 'react-icons/bi';
+import { AiFillDelete } from 'react-icons/ai';
+import { TiTick } from 'react-icons/ti';
+import { RxCross2 } from 'react-icons/rx';
 
 const Table = ({ todoList }) => {
   const { setTodoList, setParams } = useContext(TodoContext);
@@ -80,91 +85,100 @@ const Table = ({ todoList }) => {
       <div className='w-full md:w-5/6 lg:w-5/6 xl:w-5/6 min-w-min overflow-x-auto bg-white shadow-lg p-4 md:p-6'>
         <AddTodoModal onClose={onModalClose} isOpen={modalVisible} todo={currentTodo} mode={mode} />
         <DeleteModal onClose={onModalClose} isOpen={deleteModalVisible} todoId={todoId} />
-        <Search />
-        <Button
-          floatRight
-          type='submit'
-          onClick={() => {
-            setModalVisible(true);
-            setMode('add');
-          }}
-        >
-          Add Todo
-        </Button>
-        <div className='my-4'>
-          <ul className='flex flex-col md:flex-row gap-2 md:gap-4 text-lg text-gray-400'>
-            <li
-              className={clsx(
-                'px-3 py-2 hover:bg-blue-400 hover:rounded-3xl hover:text-white',
-                status === '' && 'bg-blue-400 rounded-3xl text-white'
-              )}
-              onClick={() => {
-                setStatus('');
-                setParams((prevState) => {
-                  return { ...prevState, filterByStatus: '' };
-                });
-              }}
-            >
-              All
-            </li>
-            <li
-              className={clsx(
-                'px-3 py-2 hover:bg-blue-400 hover:rounded-3xl hover:text-white',
-                status === 'completed' && 'bg-blue-400 rounded-3xl text-white'
-              )}
-              onClick={() => {
-                setStatus('completed');
-                setParams((prevState) => {
-                  return { ...prevState, filterByStatus: 'complete' };
-                });
-              }}
-            >
-              Completed
-            </li>
-            <li
-              className={clsx(
-                'px-3 py-2 hover:bg-blue-400 hover:rounded-3xl hover:text-white',
-                status === 'incompleted' && 'bg-blue-400 rounded-3xl text-white'
-              )}
-              p
-              onClick={() => {
-                setStatus('incomplete');
-                setParams((prevState) => {
-                  return { ...prevState, filterByStatus: 'incomplete' };
-                });
-              }}
-            >
-              Incomplete
-            </li>
-            <li className='grow'></li>
-            <li className='flex flex-row justify-center items-center'>
-              <span className='w-48 font-medium'>Sort By - </span>
-              <select
-                name='category'
-                id='category'
-                className='input-class'
-                onChange={(e) => setSortParams(e.target.value)}
+        <div className='flex flex-col md:flex-row justify-between items-center'>
+          <Search />
+          <div className='my-4'>
+            <ul className='flex flex-col md:flex-row gap-2 md:gap-4 text-lg text-gray-400'>
+              <li
+                className={clsx(
+                  'px-3 py-2 hover:bg-blue-400 hover:rounded-3xl hover:text-white',
+                  status === '' && 'bg-blue-400 rounded-3xl text-white'
+                )}
+                onClick={() => {
+                  setStatus('');
+                  setParams((prevState) => {
+                    return { ...prevState, filterByStatus: '' };
+                  });
+                }}
               >
-                <option value='' disabled selected>
-                  Select sort type
-                </option>
-                <option value='priority'>Priority</option>
-                <option value='dueDate'>Due Date</option>
-                <option value='category'>Category</option>
-              </select>
-            </li>
-          </ul>
+                All
+              </li>
+              <li
+                className={clsx(
+                  'px-3 py-2 hover:bg-blue-400 hover:rounded-3xl hover:text-white',
+                  status === 'completed' && 'bg-blue-400 rounded-3xl text-white'
+                )}
+                onClick={() => {
+                  setStatus('completed');
+                  setParams((prevState) => {
+                    return { ...prevState, filterByStatus: 'complete' };
+                  });
+                }}
+              >
+                Completed
+              </li>
+              <li
+                className={clsx(
+                  'px-3 py-2 hover:bg-blue-400 hover:rounded-3xl hover:text-white',
+                  status === 'incompleted' && 'bg-blue-400 rounded-3xl text-white'
+                )}
+                p
+                onClick={() => {
+                  setStatus('incomplete');
+                  setParams((prevState) => {
+                    return { ...prevState, filterByStatus: 'incomplete' };
+                  });
+                }}
+              >
+                Incomplete
+              </li>
+            </ul>
+          </div>
+          <Button
+            floatRight
+            type='submit'
+            onClick={() => {
+              setModalVisible(true);
+              setMode('add');
+            }}
+          >
+            Add New Todo
+          </Button>
         </div>
 
         <div class='flex items-center sm:justify-center ml-4 sm:ml-0'>
           <table class='w-full text-sm border-separate border-spacing-y-2'>
             <thead className='text-left'>
               <tr className='tr-class'>
-                <th className='td-header-class'>Title and Descripion</th>
-                <th className='td-header-class'>Priority</th>
-                <th className='td-header-class'>Status</th>
-                <th className='td-header-class'>Due Date</th>
-                <th className='td-header-class'>Category</th>
+                <th className='td-header-class'>Title</th>
+                <th className='td-header-class flex flex-row items-center gap-2'>
+                  Priority{' '}
+                  <BiSort
+                    title='Sort by Priority'
+                    className='hover:scale-125'
+                    onClick={() => setSortParams('priority')}
+                  />
+                </th>
+                <th className='td-header-class'>Status </th>
+                <th className='td-header-class flex flex-row items-center gap-2'>
+                  Due Date{' '}
+                  <BiSort
+                    title='Sort by Priority'
+                    className='hover:scale-125'
+                    onClick={() => setSortParams('dueDate')}
+                  />
+                </th>
+                <th className='td-header-class'>
+                  <div className='flex flex-row items-center gap-2'>
+                    <p>Category</p>
+                    <BiSort
+                      title='Sort by Priority'
+                      className='hover:scale-125'
+                      onClick={() => setSortParams('category')}
+                    />
+                  </div>
+                  <p></p>
+                </th>
                 <th className='td-header-class'>Actions</th>
               </tr>
             </thead>
@@ -189,52 +203,63 @@ const Table = ({ todoList }) => {
                         {task.priority}
                       </span>
                     </td>
-                    <td class='td-class'>{task.status}</td>
+                    <td class='td-class text-lg'>{task.status}</td>
                     <td class='td-class'>
                       <span
                         className={clsx(
-                          isDueDateWithin2Days(task.dueDate)
-                            ? 'text-red-500'
-                            : 'text-blue-500'
+                          `text-lg`,
+                          isDueDateWithin2Days(task.dueDate) ? 'text-red-500' : 'text-blue-500'
                         )}
                       >
                         {new Date(task.dueDate).toDateString()}
                       </span>
                     </td>
 
-                    <td class='td-class'>{task.category}</td>
+                    <td class='td-class text-lg'>{task.category}</td>
                     <td class='td-class'>
-                      <span className='flex flex-row gap-3 justify-between'>
-                        <button
-                          className='bg-green-600 text-white px-4 py-2 rounded-lg'
-                          onClick={() => {
-                            editTodo(task._id, {
-                              status: task.status === 'incomplete' ? 'complete' : 'incomplete',
-                            });
-                            getAllTodos(setTodoList);
-                          }}
-                        >
-                          {task.status === 'incomplete' ? 'Mark as Complete' : 'Mark as Incomplete'}
-                        </button>
-                        <button
-                          className='bg-blue-400 text-white px-4 py-2 rounded-lg'
+                      <span className='flex flex-row justify-between'>
+                        {task.status === 'incomplete' ? (
+                          <TiTick
+                            className='h-7 w-7 hover:scale-125'
+                            title='Mark as completed'
+                            onClick={() => {
+                              editTodo(task._id, {
+                                status: 'complete',
+                              });
+                              getAllTodos(setTodoList);
+                            }}
+                          />
+                        ) : (
+                          <RxCross2
+                            className='h-7 w-7 hover:scale-125'
+                            title='Mark as Incomplete'
+                            onClick={() => {
+                              editTodo(task._id, {
+                                status: 'incomplete',
+                              });
+                              getAllTodos(setTodoList);
+                            }}
+                          />
+                        )}
+
+                        <BiSolidEditAlt
+                          className='h-7 w-7 hover:scale-125'
+                          title='Edit Todo'
                           onClick={() => {
                             setModalVisible(true);
                             setMode('edit');
                             setCurrentTodo(task);
                           }}
-                        >
-                          Edit
-                        </button>
-                        <button
-                          className='bg-rose-400 text-white px-4 py-2 rounded-lg'
+                        />
+
+                        <AiFillDelete
+                          className='h-7 w-7 hover:text-rose-600 hover:scale-125'
+                          title='Delete Todo'
                           onClick={() => {
                             setTodoId(task._id);
                             setDeleteModalVisible(true);
                           }}
-                        >
-                          Delete
-                        </button>
+                        />
                       </span>
                     </td>
                   </tr>

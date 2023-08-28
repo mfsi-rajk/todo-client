@@ -23,7 +23,7 @@
 }
 
 .red-tag {
-  @apply rounded-md bg-rose-600/50 py-2 px-4 text-xs font-semibold uppercase text-rose-900 antialiased;
+  @apply rounded-md bg-rose-200 py-2 px-4 text-xs font-semibold uppercase text-rose-600 antialiased;
 }
 .input-class {
   @apply form-input block w-full mt-2 rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400;
